@@ -23,5 +23,7 @@ module NatalieNews
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    config.time_zone = "Mountain Time (US & Canada)"
   end
 end

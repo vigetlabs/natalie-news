@@ -1,0 +1,21 @@
+<div id="<%= dom_id article %>">
+  <p>
+    <strong>Title:</strong>
+    <%= article.title %>
+  </p>
+
+  <p>
+    <strong>Author:</strong>
+    <%= article.author %>
+  </p>
+
+  <p>
+    <strong>Date Posted:</strong>
+    <%= article.date_posted&.strftime("%B %d, %Y %H:%M") %>
+  </p>
+
+  <p>
+  <strong>Url:</strong>
+  <%= link_to article.url, article.url, target: "_blank" %>
+</p>
+</div>
