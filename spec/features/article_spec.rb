@@ -41,3 +41,26 @@ RSpec.describe 'Articles CRUD', type: :feature do
     expect(page).not_to have_content('Sample Article')
   end
 end
+
+RSpec.describe 'Article sorting', type: :feature do
+  let!(:older_article) { Article.create(title: 'Old News', author: 'Alice', url: 'https://old.com', created_at: 1.day.ago) }
+
+  it 'shows newly created article at the top of the list' do
+    visit new_article_path
+
+    fill_in 'Title', with: 'Fresh Post'
+    fill_in 'Author', with: 'Bob'
+    fill_in 'Url', with: 'https://fresh.com'
+    click_button 'Create Article'
+
+    visit articles_path
+
+    # Find all text nodes under the articles div
+    article_texts = within('#articles') do
+      all('*', minimum: 1).map(&:text).reject(&:empty?)
+    end
+
+    # Expect the first article text rendered to include the new title
+    expect(article_texts.first).to include('Fresh Post')
+  end
+end
