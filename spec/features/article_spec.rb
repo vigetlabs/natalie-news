@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe 'Articles CRUD', type: :feature do
-  let!(:article) { Article.create(title: 'Sample Article', author: 'Jane', url: 'https://www.viget.com/') }
+  let!(:article) { create(:article) } # default article by factory bot
 
   it 'allows the user to create a new article' do
     visit new_article_path
 
     fill_in 'Title', with: 'Viget Website'
-    fill_in 'Author', with: 'Jane'
+    fill_in 'Author', with: 'Danny'
     fill_in 'Url', with: 'https://www.viget.com/'
     click_button 'Create Article'
 
@@ -43,7 +43,7 @@ RSpec.describe 'Articles CRUD', type: :feature do
 end
 
 RSpec.describe 'Article sorting', type: :feature do
-  let!(:older_article) { Article.create(title: 'Old News', author: 'Alice', url: 'https://old.com', created_at: 1.day.ago) }
+  let!(:older_article) { create(:article, :published_yesterday, title: 'Old News') }
 
   it 'shows newly created article at the top of the list' do
     visit new_article_path
