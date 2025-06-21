@@ -2,15 +2,15 @@
 
 <% content_for :title, "Articles" %>
 
-<h1>Articles!</h1>
+<header>Articles!</header>
 
 <div id="articles">
   <% @articles.each do |article| %>
-    <%= render article %>
-    <p>
-      <%= link_to "Show this article", article %>
-    </p>
+    <div class="article">
+      <%= render article %>
+      <p><%= link_to "Show this article", article, class: "button" %></p>
+    </div>
   <% end %>
 </div>
 
-<%= link_to "New article", new_article_path %>
+<%= link_to "New article", new_article_path, class: "button" %>
