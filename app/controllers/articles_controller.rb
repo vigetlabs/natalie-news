@@ -1,9 +1,10 @@
 class ArticlesController < ApplicationController
+  include Pagy::Backend
   before_action :set_article, only: %i[ show edit update destroy ]
 
   # GET /articles or /articles.json
   def index
-    @articles = Article.order(created_at: :desc)
+    @pagy, @articles = pagy(Article.order(created_at: :desc), limit: 20)
   end
 
   # GET /articles/1 or /articles/1.json
