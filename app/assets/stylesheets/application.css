@@ -1,6 +1,5 @@
 /* app/assets/stylesheets/application.css */
 
-/* Background similar to Hacker News */
 body {
   background-color: #f6f6ef; /* light beige */
   color: #333; /* dark gray text */
@@ -9,7 +8,6 @@ body {
   line-height: 1.4;
 }
 
-/* Neon green header bar like top HN bar */
 header {
   background-color: #60FF34;
   color: black;
@@ -21,18 +19,15 @@ header {
   box-shadow: 0 0 8px #60FF34aa;
 }
 
-/* Article container with subtle border like HN */
 #articles {
   border-top: 1px solid #ddd;
 }
 
-/* Each article item with bottom border */
 .article {
   padding: 0.5rem 0;
   border-bottom: 1px solid #ddd;
 }
 
-/* Article title link styled with neon green */
 .article h2 a {
   color: #60FF34;
   text-decoration: none;
@@ -43,7 +38,6 @@ header {
   text-decoration: underline;
 }
 
-/* Author in smaller, muted text */
 .article p.author {
   font-size: 0.9rem;
   color: #666;
@@ -63,6 +57,10 @@ header {
   transition: background-color 0.3s ease;
   font-size: 1rem;
   user-select: none;
+  -webkit-transition: background-color 0.3s ease;
+  -moz-transition: background-color 0.3s ease;
+  -ms-transition: background-color 0.3s ease;
+  -o-transition: background-color 0.3s ease;
 }
 
 .button:hover,
@@ -134,4 +132,51 @@ header {
   border-radius: 4px;
   margin-bottom: 1rem;
   color: #800000;
+}
+
+.pagy {
+  display: flex;
+  font-family: sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+.pagy > :not([hidden]) ~ :not([hidden]) {
+  --space-reverse: 0;
+  margin-right: calc(0.25rem * var(--space-reverse));
+  margin-left: calc(0.25rem * calc(1 - var(--space-reverse)));
+}
+.pagy a:not(.gap) {
+  display: block;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  background-color: #e5e7eb;
+  padding: 0.25rem 0.75rem;
+  color: inherit;
+}
+.pagy a:not(.gap):hover {
+  background-color: #d1d5db;
+}
+.pagy a:not(.gap):not([href]) { /* disabled links */
+  cursor: default;
+  background-color: #f3f4f6;
+  color: #d1d5db;
+}
+.pagy a:not(.gap).current {
+  background-color: #9ca3af;
+  color: white;
+}
+.pagy label {
+  white-space: nowrap;
+  display: inline-block;
+  border-radius: 0.5rem;
+  background-color: #e5e7eb;
+  padding: 0.125rem 0.75rem;
+}
+.pagy label input {
+  line-height: 1.5rem;
+  border-radius: 0.375rem;
+  border-style: none;
+  background-color: #f3f4f6;
 }
