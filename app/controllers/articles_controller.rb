@@ -1,6 +1,14 @@
 class ArticlesController < ApplicationController
   include Pagy::Backend
   before_action :set_article, only: %i[ show edit update destroy ]
+  before_action :authenticate_user!, except: [ :index, :show ]
+  before_action :authorize_user!, only: [ :edit, :update, :destroy ]
+
+  def authorize_user!
+    unless @article.user == current_user
+      redirect_to articles_path, alert: "You are not authorized to do that."
+    end
+  end
 
   # GET /articles or /articles.json
   def index
@@ -13,7 +21,7 @@ class ArticlesController < ApplicationController
 
   # GET /articles/new
   def new
-    @article = Article.new
+    @article = current_user.articles.new
   end
 
   # GET /articles/1/edit
@@ -22,7 +30,7 @@ class ArticlesController < ApplicationController
 
   # POST /articles or /articles.json
   def create
-    @article = Article.new(article_params)
+    @article = current_user.articles.new(article_params)
     @article.date_posted ||= Time.current
 
     respond_to do |format|

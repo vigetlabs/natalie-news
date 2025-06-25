@@ -1,6 +1,5 @@
 <div id="<%= dom_id article %>" class="article-card">
   <h2><%= article.title %></h2>
-      <p><strong>Author:</strong> <%= article.author %></p>
+      <p><strong>Posted by:</strong> <%= article.user.username %></p>
       <p><strong>Date Posted:</strong> <%= article.date_posted&.strftime("%B %d, %Y %H:%M") %></p>
       <p><strong>Url:</strong> <%= link_to article.url, article.url, target: "_blank", class: "button" %></p>
-    
