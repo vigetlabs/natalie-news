@@ -1,12 +1,12 @@
-<p style="color: green"><%= notice %></p>
-
 <%= render @article %>
 
 <div>
-  <%= link_to "Edit this article", edit_article_path(@article), class: "button" %>
-  <%= link_to "Back to articles", articles_path, class: "button" %>
+  <% if @article.user == current_user %>
+    <%= link_to "Edit this article", edit_article_path(@article), class: "button" %>
+    <%= link_to "Delete this article", @article, method: :delete, data: { confirm: "Are you sure?" }, class: "button button--danger" %>
+  <% end %>
 
   <p>
-    <%= button_to "Destroy this article", @article, method: :delete, class: "button--danger" %>
+    <%= link_to "Back to articles", articles_path, class: "button" %>
   </p>
 </div>
