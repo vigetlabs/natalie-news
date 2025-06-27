@@ -18,6 +18,16 @@ RSpec.describe 'Articles CRUD', type: :feature do
     expect(page).to have_content('Viget Website')
   end
 
+  it "does not allow invalid create" do
+    # Title and Url are required
+    visit new_article_path
+    fill_in 'Title', with: ''
+    fill_in 'Url', with: ''
+    click_button 'Create Article'
+
+    expect(page).to have_content("prohibited this article from being saved")
+  end
+
   it 'allows the user to view an article' do
     visit article_path(article)
 
@@ -33,6 +43,14 @@ RSpec.describe 'Articles CRUD', type: :feature do
     expect(page).to have_content('Article was successfully updated')
     expect(page).to have_content('Updated Title')
   end
+
+  it "does not allow invalid update" do
+  visit edit_article_path(article)
+  fill_in 'Title', with: ''
+  click_button 'Update Article'
+
+  expect(page).to have_content("prohibited this article from being saved")
+end
 
   it 'allows the user to delete an article' do
     visit article_path(article)
@@ -110,5 +128,30 @@ RSpec.describe "Article User Authentication Edit/Delete", type: :system do
 
     expect(page).to have_link("Edit this article")
     expect(page).to have_link("Delete this article")
+  end
+
+  it "redirects unauthorized user on edit" do
+    login_as(other_user, scope: :user)
+    visit edit_article_path(article)
+    expect(current_path).to eq(articles_path)
+    expect(page).to have_content("You are not authorized")
+  end
+end
+
+RSpec.describe 'Article Url Normalization', type: :feature do
+  let!(:user) { create(:user) }
+
+  before do
+    login_as(user, scope: :user)
+  end
+
+  it "normalizes an article url w/o https" do
+    visit new_article_path
+    fill_in 'Title', with: 'No https'
+    fill_in 'Url', with: 'www.google.com/'
+    click_button 'Create Article'
+
+    expect(page).to have_content('Article was successfully created')
+    expect(page).to have_content('https://www.google.com/')
   end
 end

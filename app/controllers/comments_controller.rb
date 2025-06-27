@@ -9,10 +9,6 @@ class CommentsController < ApplicationController
   def show
   end
 
-  def new
-    @comment = current_user.comments.new
-  end
-
   def edit
   end
 
@@ -25,7 +21,7 @@ class CommentsController < ApplicationController
         format.html { redirect_to @article, notice: "Comment was successfully created." }
         format.json { render :show, status: :created, location: @article }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { redirect_to @article, status: :unprocessable_entity }
         format.json { render json: @article.errors, status: :unprocessable_entity }
       end
     end
