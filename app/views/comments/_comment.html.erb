@@ -1,0 +1,9 @@
+<div class="comment">
+  <p><%= comment.body %></p>
+  <p><small>By <%= comment.user.username %></small></p>
+
+  <% if comment.user == current_user %>
+    <%= link_to "Edit", edit_article_comment_path(comment.article, comment), class: "button" %>
+    <%= button_to 'Delete', [comment.article, comment], method: :delete, data: { confirm: 'Are you sure?' }, class: 'button button--danger' %>
+  <% end %>
+</div>
