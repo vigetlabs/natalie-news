@@ -4,12 +4,6 @@ class ArticlesController < ApplicationController
   before_action :authenticate_user!, except: [ :index, :show ]
   before_action :authorize_user!, only: [ :edit, :update, :destroy ]
 
-  def authorize_user!
-    unless @article.user == current_user
-      redirect_to articles_path, alert: "You are not authorized to do that."
-    end
-  end
-
   # GET /articles or /articles.json
   def index
     @pagy, @articles = pagy(Article.order(created_at: :desc), limit: 20)
@@ -75,6 +69,12 @@ class ArticlesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def article_params
-      params.expect(article: [ :title, :url, :author, :date_posted ])
+      params.expect(article: [ :title, :url, :date_posted ])
+    end
+
+    def authorize_user!
+      unless @article.user == current_user
+        redirect_to articles_path, alert: "You are not authorized to do that."
+      end
     end
 end

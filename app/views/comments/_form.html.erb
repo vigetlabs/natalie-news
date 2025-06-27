@@ -1,0 +1,10 @@
+<%= form_with(model: [article, Comment.new], local: true, class: "comment-form") do |form| %>
+  <div class="form-field">
+    <%= form.label :body, class: "form-label" %>
+    <%= form.text_area :body, class: "form-input", required: true %>
+  </div>
+
+  <div class="form-actions">
+    <%= form.submit "Add Comment", class: "button" %>
+  </div>
+<% end %>
