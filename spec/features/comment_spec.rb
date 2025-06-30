@@ -18,16 +18,6 @@ RSpec.describe 'Comments CRUD', type: :feature do
     expect(page).to have_content(user.username)
   end
 
-  # it "does not allow invalid create" do
-  #   # Body is required
-  #   visit article_path(article)
-  #   fill_in 'Body', with: ''
-  #   click_button 'Add Comment'
-
-  #   expect(page).to have_content('prohibited this comment from being saved')
-  # end
-  # can't get the prohibited this comment from being saved to actually show up
-
   it 'allows the user to edit a comment' do
     visit edit_article_comment_path(article, comment)
 
@@ -50,7 +40,6 @@ RSpec.describe 'Comments CRUD', type: :feature do
   it 'allows the user to delete a comment' do
     visit article_path(article)
 
-    # Assuming delete button is a form button or link with confirm
     click_button 'Delete'
 
     expect(page).to have_content('Comment was successfully destroyed')
@@ -86,5 +75,18 @@ RSpec.describe "Comment User Authentication Edit/Delete", type: :system do
 
     expect(current_path).to eq(articles_path)
     expect(page).to have_content("You are not authorized")
+  end
+end
+
+RSpec.describe "Comments", type: :request do
+  let!(:user) { create(:user) }
+  let!(:article) { create(:article) }
+
+  before do
+    login_as(user, scope: :user)
+  end
+  it "returns unprocessable_entity for invalid comment" do
+    post article_comments_path(article), params: { comment: { body: "" } }
+    expect(response).to have_http_status(:unprocessable_entity)
   end
 end
