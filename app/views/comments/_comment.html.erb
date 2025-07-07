@@ -11,7 +11,7 @@
   <% if user_signed_in? %>
     <!-- Reply form -->
     reply
-    <%= render 'comments/form', article: comment.article, comment: Comment.new(parent_id: comment.id) %>    <% end %>
+    <%= render 'comments/form', article: comment.article, comment: Comment.new(parent_id: comment.id), form_class: "reply" %>    <% end %>
 
   <% comment.replies.each do |reply| %>
     <div class="reply" style="margin-left: 30px;">
