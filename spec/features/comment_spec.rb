@@ -11,8 +11,10 @@ RSpec.describe 'Comments CRUD', type: :feature do
 
   it "allows the user to create a new comment" do
     visit article_path(article)
-    fill_in 'Body', with: 'Sample comment text body'
-    click_button 'Add Comment'
+    within(".comment-form.top-level") do
+      fill_in 'Body', with: 'Sample comment text body'
+      click_button 'Add Comment'
+    end
 
     expect(page).to have_content('Sample comment text body')
     expect(page).to have_content(user.username)
@@ -88,5 +90,27 @@ RSpec.describe "Comments", type: :request do
   it "returns unprocessable_entity for invalid comment" do
     post article_comments_path(article), params: { comment: { body: "" } }
     expect(response).to have_http_status(:unprocessable_entity)
+  end
+end
+
+RSpec.describe 'Comment Replies', type: :feature do
+  let!(:user) { create(:user) }
+  let!(:article) { create(:article) }
+  let!(:parent_comment) { create(:comment, article: article, user: user, body: "Parent comment") }
+
+  before do
+    login_as(user, scope: :user)
+  end
+
+  it 'allows a user to reply to a comment' do
+    visit article_path(article)
+
+    within(".comment-form.reply") do
+      fill_in 'Body', with: 'This is a reply'
+      click_button 'Add Comment'
+    end
+
+    expect(page).to have_content('This is a reply')
+    expect(page).to have_content(user.username)
   end
 end

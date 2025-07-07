@@ -1,9 +1,22 @@
 <div class="comment">
-  <p><%= comment.body %></p>
-  <p><small>By <%= comment.user.username %></small></p>
+  <%= turbo_frame_tag "comment_#{comment.id}" do %>
+    <p><%= comment.body %></p>
+    <p><small>By <%= comment.user.username %></small></p>
 
-  <% if comment.user == current_user %>
-    <%= link_to "Edit", edit_article_comment_path(comment.article, comment), class: "button" %>
-    <%= button_to 'Delete', [comment.article, comment], method: :delete, data: { confirm: 'Are you sure?' }, class: 'button button--danger' %>
+    <% if comment.user == current_user %>
+      <%= link_to "Edit", edit_article_comment_path(comment.article, comment), class: "button" %>
+      <%= button_to 'Delete', [comment.article, comment], method: :delete, data: { confirm: 'Are you sure?' }, class: 'button button--danger' %>
+    <% end %>
+  <% end %>
+  <% if user_signed_in? %>
+    <!-- Reply form -->
+    reply
+    <%= render 'comments/form', article: comment.article, comment: Comment.new(parent_id: comment.id), form_class: "reply" %>    <% end %>
+
+  <% comment.replies.each do |reply| %>
+    <div class="reply" style="margin-left: 30px;">
+      <%= render partial: 'comments/comment', locals: { comment: reply } %>
+    </div>
   <% end %>
 </div>
+
